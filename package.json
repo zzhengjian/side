@@ -1,0 +1,53 @@
+{
+  "name": "@seleniumhq/side-recorder",
+  "version": "3.5.10",
+  "private": true,
+  "description": "Selenium IDE WebExtension based recorder",
+  "author": "Tomer <tomer@corevo.io>",
+  "homepage": "http://github.com/SeleniumHQ/selenium-ide",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "webpack",
+    "prepublishOnly": "yarn build",
+    "watch": "yarn build -w"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeleniumHQ/selenium-ide.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SeleniumHQ/selenium-ide/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-typescript": "^7.6.0",
+    "@bazel/bazel": "^2.1.0",
+    "@bazel/buildifier": "^0.22.0",
+    "@bazel/ibazel": "^0.10.3",
+    "@bazel/jasmine": "^2.0.0-rc.0",
+    "@bazel/typescript": "^2.0.0",
+    "@testing-library/dom": "^7.31.2",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^5.0.2",
+    "engine.io": "^5.1.1",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "@medv/finder": "^2.0.0",
+    "engine.io-client": "^5.1.1",
+    "scroll-into-view-if-needed": "^2.2.20",
+    "ua-parser-js": "^0.7.19",
+    "camelcase": "6.2.0",
+    "webextension-polyfill": "^0.8.0"
+  }
+}
