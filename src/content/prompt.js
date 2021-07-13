@@ -151,6 +151,12 @@ window.__side.highlight = async element => {
   element.removeAttribute('data-side-highlight')
 }
 
+// window.__side.setBuilderOptions = async options => {
+//   await window.__side.postMessage(window, {
+//     action: 'setBuilderOptions',
+//     builderOptions: options
+//   })
+// }
 
 window.__side.selectElement = async callback => {
   await window.__side.postMessage(window, {
@@ -158,15 +164,24 @@ window.__side.selectElement = async callback => {
   }).then(callback)
 }
 
-window.__side.generateElement = async callback => {
+window.__side.generateElement = async (callback, options) => {
   await window.__side.postMessage(window, {
     action: 'generateElement',
+    builderOptions: options
   }).then(callback)
 }
 
-window.__side.generateElements = async callback => {
+window.__side.generateElements = async (callback, options) => {
   await window.__side.postMessage(window, {
     action: 'generateElements',
+    builderOptions: options
+  }).then(callback)
+}
+
+window.__side.generateAllElements = async (callback, options) => {
+  await window.__side.postMessage(window, {
+    action: 'generateAllElements',
+    builderOptions: options
   }).then(callback)
 }
 

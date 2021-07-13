@@ -18,26 +18,31 @@
 import camelcase from 'camelcase'
 
 export default class NameBuilder {
+  
   constructor() {
     // Instead, we simply assign global content window to this.win
     this.win = window
     const doc = this.win.document
+    this.options = {pascalCase: true, preserveConsecutiveUppercase: true}
+  }
+
+  setBuilderOptions(options){
+    this.options = {...this.options, ...options}
   }
 
   buildName(element){
     if(element.tagName == "svg") {
       element = element.parentElement
     }
-    const id = element.id
-    const className = element.className
-    const text = element.textContent ? element.textContent.trim() : ""
-    let originalText = id ? id : (text ? text : className)
+    let attrList = ["id", "text", "class"]
+    let originalText = this.nameCandidate(element, attrList)
     let name = ""
     let nameArr = (typeof originalText == "string" && originalText.match(/[a-zA-Z0-9\u4e00-\u9fa5]+/g)) || ["DefaultElement"]
     for(const n of nameArr){
       if(name.length >= 30) break
-      name += camelcase(n, {pascalCase: true, preserveConsecutiveUppercase: true})
+      name += n + ' '
     }
+    name = camelcase(name, this.options)
     name = this.append(element, name)
     return name
   }
@@ -63,5 +68,39 @@ export default class NameBuilder {
       name += "Img"
     }
     return name
+  }
+
+  nameCandidate(element, configList){
+    while(configList.length>0){
+      let attribute = configList.shift()
+      let name = ""
+      if(attribute == "text" && !this.has2ChildElements(element)){
+        name = element.textContent
+      }
+      else if(attribute == "class"){
+        name = element.className
+      }else{
+        name = element[attribute]
+      }
+      name = name ? name.trim() : ""
+      if(name){
+        return name
+      }
+    }
+  }
+
+  has2ChildElements(element){
+    if(element.childElementCount == 0){
+      return false
+    }
+    if(element.childElementCount>=2){
+      return true
+    }
+    let children = element.children
+    let result = false
+    for(let child of children){
+      result = result || this.has2ChildElements(child)
+    }
+    return result
   }
 }

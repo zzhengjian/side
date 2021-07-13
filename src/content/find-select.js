@@ -53,7 +53,7 @@ window.addEventListener('message', event => {
           })
       }
       else if(event.data.action === 'generateElement'){
-        generateElement().then(target => {
+        generateElement(event.data.builderOptions).then(target => {
           event.source.postMessage(
             {
               id: event.data.id,
@@ -65,7 +65,7 @@ window.addEventListener('message', event => {
         })
       }
       else if(event.data.action === 'generateElements'){
-        generateElements().then(target => {
+        generateElements(event.data.builderOptions).then(target => {
           event.source.postMessage(
             {
               id: event.data.id,
@@ -76,8 +76,18 @@ window.addEventListener('message', event => {
           )
         })
       }
-  
-  
+      else if(event.data.action === 'generateAllElements'){
+        generateAllElements(event.data.builderOptions).then(target => {
+          event.source.postMessage(
+            {
+              id: event.data.id,
+              direction: 'from-content-script',
+              result: target
+            },
+            '*'
+          )
+        })
+      }
     }
 
 })
@@ -148,11 +158,12 @@ function selectElement(){
   })
 }
 
-function generateElement(){
+function generateElement(options){
   return new Promise(res => {
     new TargetSelector(function(element, win) {
       if (element && win) {
         const target = locatorBuilders.build(element)
+        nameBuilder.setBuilderOptions(options)
         const elementName = nameBuilder.buildName(element)
         if (target) {
           let ele = {}
@@ -167,7 +178,7 @@ function generateElement(){
   })
 }
 
-function generateElements(){
+function generateElements(options){
   return new Promise(res => {
     new TargetSelector(function(element, win) {
       if (element && win) {
@@ -178,6 +189,7 @@ function generateElements(){
         for(const ele of elementList){
           if(!isDisplayed(ele)) continue
           const target = locatorBuilders.build(ele)
+          nameBuilder.setBuilderOptions(options)
           const elementName = nameBuilder.buildName(ele)
           elements[elementName] = {
             type: target.slice(0,target.indexOf('=')),
@@ -189,6 +201,31 @@ function generateElements(){
         }
       }
     })
+  })
+}
+
+function generateAllElements(options){
+  return new Promise(res => {
+    let element = document.querySelector('body')
+    if (element) {
+      //TODO: generateElements
+      let elements = {}
+      let xpathFilter = `xpath=.//*[not(ancestor::table)][normalize-space(translate(text(),' ',' '))][not(ancestor::select)][not(self::sup)][not(self::iframe)][not(self::frame)][not(self::script)]|.//input[not(ancestor::table)][@type!='hidden']|(.//img|.//select|.//i|.//a|.//h1|.//h2|.//h3|.//h4)[not(ancestor::table)]`
+      let elementList = locatorBuilders.findElements(xpathFilter, element)
+      for(const ele of elementList){
+        if(!isDisplayed(ele)) continue
+        const target = locatorBuilders.build(ele)
+        nameBuilder.setBuilderOptions(options)
+        const elementName = nameBuilder.buildName(ele)
+        elements[elementName] = {
+          type: target.slice(0,target.indexOf('=')),
+          locator: target.slice(target.indexOf('=') + 1)
+        }
+      }
+      if (elements) {
+        res(JSON.stringify(elements))
+      }
+    }
   })
 }
 
