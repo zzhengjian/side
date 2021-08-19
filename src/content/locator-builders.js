@@ -440,6 +440,12 @@ LocatorBuilders.add('xpath:idRelative', function xpathIdRelative(e) {
           e
         )
       }
+      else if(current.parentNode.nodeName.toLowerCase() == 'body'){
+        return this.preciseXPath(
+          '//body' + path,
+          e
+        )
+      }
     } else {
       return null
     }

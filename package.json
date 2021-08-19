@@ -17,10 +17,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SeleniumHQ/selenium-ide.git"
+    "url": "https://github.com/zzhengjian/side.git"
   },
   "bugs": {
-    "url": "https://github.com/SeleniumHQ/selenium-ide/issues"
+    "url": "https://github.com/zzhengjian/side/issues"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.2",

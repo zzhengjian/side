@@ -216,7 +216,19 @@ function generateAllElements(options){
         if(!isDisplayed(ele)) continue
         const target = locatorBuilders.build(ele)
         nameBuilder.setBuilderOptions(options)
-        const elementName = nameBuilder.buildName(ele)
+        let elementName = nameBuilder.buildName(ele)
+
+        while(elements[elementName]){
+          let elementNameSuffix = elementName.split('_')[0]
+          let appendNum = elementName.split('_')[1]
+          if(appendNum){
+              appendNum = Number(appendNum) + 1
+          }
+          else{
+              appendNum = 1
+          }
+          elementName = elementNameSuffix + '_' + appendNum
+        }
         elements[elementName] = {
           type: target.slice(0,target.indexOf('=')),
           locator: target.slice(target.indexOf('=') + 1)

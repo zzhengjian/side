@@ -110,6 +110,8 @@ module.exports = {
       { from: 'content/highlight.css', to: './' },
       { from: 'manifest.json', to: '../' },
       { from: 'icons', to: '../icons' },
+      { from: 'popup.html', to: '../' },
+      { from: 'lib', to: '../lib' },
     ]),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     /*new ExtractTextPlugin({

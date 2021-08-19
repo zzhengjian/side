@@ -48,11 +48,11 @@ export default class TargetSelector {
         }
         this.div = null
       }
-      if (this.header) {
-        if (this.header.parentNode) {
-          this.header.parentNode.removeChild(this.header)
+      if (this.banner) {
+        if (this.banner.parentNode) {
+          this.banner.parentNode.removeChild(this.banner)
         }
-        this.header = null
+        this.banner = null
       }
       if (this.win) {
         const doc = this.win.document
